@@ -12,7 +12,9 @@
       <% items.forEach(item => { %>
           <div>
             <span><%= item.name %></span>
-            <span><%= item.category %></span>
+            <% if (item.category) { %>
+              <span><%= item.category %></span>
+            <% } %>
             <img src="<%= item.imageurl %>" alt="">
             <span><%= item.price %></span>
           </div>
