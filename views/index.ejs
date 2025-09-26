@@ -17,14 +17,28 @@
             <% } %>
             <img src="<%= item.imageurl %>" alt="">
             <span><%= item.price %></span>
+            <% if (item.amount) { %>
+                <% if (item.amount > 0) { %>
+                    <span>Amount: <%= item.amount %></span>
+                <% } else { %>
+                    <span>Sold Out</span>
+                <% } %>
+            <% } %>
           </div>
       <% }) %>
     </div>
     <aside>
-      <h2>Categories</h2>
+      <h2>Filter Items</h2>
+      <h3>Categories</h2>
       <ul>
         <% categories.forEach(category => { %>
-            <li><a href="/<%= category.name %>"><%= category.name %></a></li>
+            <li><a href="/categories/<%= category.name %>"><%= category.name %></a></li>
+        <% }) %>
+      </ul>
+      <h3>Store Availability</h3>
+      <ul>
+        <% stores.forEach(store => { %>
+            <li><a href="/stores/<%= store.name %>"><%= store.name %></a></li>
         <% }) %>
       </ul>
     </aside>
