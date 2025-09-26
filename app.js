@@ -11,9 +11,15 @@ const indexRouter = require('./routes/indexRouter');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Configure app to have access to form inputs
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/', indexRouter);
 app.use((req, res, next) => {
   res.render('404');
+});
+app.use((err, req, res, next) => {
+  res.render('error', { message: err.message, route: err.route });
 });
 
 app.listen(PORT, (err) => {

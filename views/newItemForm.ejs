@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Item</title>
+  </head>
+  <body>
+    <h1>Add New Item</h1>
+    <form action="/newitem" method="POST">
+      <label for="name">Item Name:</label>
+      <input type="text" name="name" id="name" />
+      <label for="category">Category:</label>
+      <select name="category" id="category">
+        <% categories.forEach(category => { %>
+          <option value="<%= category.name %>"><%= category.name.toUpperCase() %></option>
+        <% }) %>
+      </select>
+      <label for="price">Price:</label>
+      <input type="number" name="price" id="price" step="0.01" />
+      <button type="submit">Add Item</button>
+    </form>
+  </body>
+</html>

@@ -7,6 +7,13 @@ module.exports = {
     );
     return rows;
   },
+  getItemByName: async (name) => {
+    const { rows } = await pool.query(
+      'SELECT items.name AS name, categories.name AS category, price, imageurl FROM items LEFT JOIN categories ON items.category_id = categories.id WHERE items.name = $1 LIMIT 1',
+      [name],
+    );
+    return rows;
+  },
   getItemsByCategory: async (category) => {
     const { rows } = await pool.query(
       'SELECT items.name AS name, price, imageurl FROM items LEFT JOIN categories ON items.category_id = categories.id WHERE categories.name = $1',
@@ -16,6 +23,13 @@ module.exports = {
   },
   getAllCategories: async () => {
     const { rows } = await pool.query('SELECT name FROM categories');
+    return rows;
+  },
+  getCategoryByName: async (category) => {
+    const { rows } = await pool.query(
+      'SELECT * FROM categories WHERE name = $1',
+      [category],
+    );
     return rows;
   },
   getItemsByStore: async (store) => {
@@ -32,5 +46,22 @@ module.exports = {
   getAllStores: async () => {
     const { rows } = await pool.query('SELECT name FROM stores');
     return rows;
+  },
+  insertItem: async (name, category, price) => {
+    await pool.query(
+      'INSERT INTO items(category_id, name, price) VALUES ((SELECT id FROM categories WHERE name LIKE $1), $2, $3)',
+      [category, name, price],
+    );
+  },
+  insertAvailability: async (storeName, itemName, amount) => {
+    await pool.query(
+      `INSERT INTO item_availability(store_id, item_id, amount)
+        VALUES (
+          (SELECT id FROM stores WHERE name = $1 LIMIT 1),
+          (SELECT id FROM items WHERE name = $2 LIMIT 1),
+          $3
+        )`,
+      [storeName, itemName, amount],
+    );
   },
 };
