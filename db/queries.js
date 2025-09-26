@@ -14,4 +14,8 @@ module.exports = {
     );
     return rows;
   },
+  getAllCategories: async () => {
+    const { rows } = await pool.query('SELECT name FROM categories');
+    return rows;
+  },
 };

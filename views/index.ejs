@@ -20,5 +20,13 @@
           </div>
       <% }) %>
     </div>
+    <aside>
+      <h2>Categories</h2>
+      <ul>
+        <% categories.forEach(category => { %>
+            <li><a href="/<%= category.name %>"><%= category.name %></a></li>
+        <% }) %>
+      </ul>
+    </aside>
   </body>
 </html>
