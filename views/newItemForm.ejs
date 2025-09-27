@@ -7,17 +7,22 @@
   </head>
   <body>
     <h1>Add New Item</h1>
+    <%- include('partials/errors', { errors }) %>
     <form action="/newitem" method="POST">
       <label for="name">Item Name:</label>
-      <input type="text" name="name" id="name" />
+      <input type="text" name="name" id="name" value="<%= locals.name %>" />
       <label for="category">Category:</label>
       <select name="category" id="category">
         <% categories.forEach(category => { %>
-          <option value="<%= category.name %>"><%= category.name.toUpperCase() %></option>
+          <% if (locals.category === category.name) { %>
+            <option value="<%= category.name %>" selected><%= category.name.toUpperCase() %></option>
+          <% } else { %>
+            <option value="<%= category.name %>"><%= category.name.toUpperCase() %></option>
+          <% } %>
         <% }) %>
       </select>
       <label for="price">Price:</label>
-      <input type="number" name="price" id="price" step="0.01" />
+      <input type="number" name="price" id="price" step="0.01" value="<%= locals.price %>" />
       <button type="submit">Add Item</button>
     </form>
   </body>

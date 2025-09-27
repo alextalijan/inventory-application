@@ -29,6 +29,15 @@ const newItemValidations = [
     .withMessage('Price must be a positive number.'),
 ];
 
+const newCategoryValidations = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('The category must have a name.')
+    .isLength({ max: 20 })
+    .withMessage('Name of the category must not be longer than 20 characters.'),
+];
+
 module.exports = {
   itemsGet: async (req, res) => {
     try {
@@ -76,14 +85,21 @@ module.exports = {
   newItemGet: async (req, res) => {
     const categories = await db.getAllCategories();
 
-    res.render('newItemForm', { categories });
+    res.render('newItemForm', { categories, errors: null });
   },
   newItemPost: [
     newItemValidations,
     async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.render('newItemForm', { errors: errors.array() });
+        const categories = await db.getAllCategories();
+        res.locals.name = req.body.name;
+        res.locals.category = req.body.category;
+        res.locals.price = req.body.price;
+        return res.render('newItemForm', {
+          categories,
+          errors: errors.array(),
+        });
       }
 
       // If the item already exists, stop the person from inputing it again
@@ -124,6 +140,21 @@ module.exports = {
       });
 
       res.redirect(`/categories/${refinedCategory}`);
+    },
+  ],
+  newCategoryGet: (req, res) => {
+    res.render('newCategoryForm', { errors: null });
+  },
+  newCategoryPost: [
+    newCategoryValidations,
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.locals.name = req.body.name;
+        return res.render('newCategoryForm', { errors: errors.array() });
+      }
+
+      // res.redirect('/');
     },
   ],
 };
