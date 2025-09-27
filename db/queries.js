@@ -53,6 +53,9 @@ module.exports = {
       [category, name, price],
     );
   },
+  insertCategory: async (category) => {
+    await pool.query('INSERT INTO categories(name) VALUES ($1)', [category]);
+  },
   insertAvailability: async (storeName, itemName, amount) => {
     await pool.query(
       `INSERT INTO item_availability(store_id, item_id, amount)

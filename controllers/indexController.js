@@ -1,12 +1,6 @@
-const { getItemByName } = require('../db/queries');
 const db = require('../db/queries');
-const {
-  body,
-  valdiationResult,
-  validationResult,
-} = require('express-validator');
+const { body, validationResult } = require('express-validator');
 const CustomError = require('../errors/CustomError');
-const { getCategoryByName } = require('../db/queries');
 
 const newItemValidations = [
   body('name')
@@ -147,14 +141,32 @@ module.exports = {
   },
   newCategoryPost: [
     newCategoryValidations,
-    (req, res) => {
+    async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         res.locals.name = req.body.name;
         return res.render('newCategoryForm', { errors: errors.array() });
       }
 
-      // res.redirect('/');
+      // Check if the category already exists
+      const [category] = await db.getCategoryByName(
+        req.body.name.trim().toLowerCase(),
+      );
+
+      if (category) {
+        return next(
+          new CustomError(
+            'This category already exists. Click the link below to add a new category.',
+            500,
+            '/newcategory',
+          ),
+        );
+      }
+
+      // Insert the new category into database
+      await db.insertCategory(req.body.name.trim().toLowerCase());
+
+      res.redirect('/');
     },
   ],
 };
