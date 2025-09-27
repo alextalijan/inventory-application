@@ -67,4 +67,16 @@ module.exports = {
       [storeName, itemName, amount],
     );
   },
+  getItemAvailabilities: async (item) => {
+    const { rows } = await pool.query(
+      `SELECT name, amount
+        FROM stores s JOIN item_availability ia
+        ON s.id = ia.store_id
+        WHERE item_id = (
+          SELECT id FROM items
+          WHERE name = $1)`,
+      [item],
+    );
+    return rows;
+  },
 };

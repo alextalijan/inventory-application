@@ -169,4 +169,10 @@ module.exports = {
       res.redirect('/');
     },
   ],
+  itemGet: async (req, res) => {
+    const [item] = await db.getItemByName(req.params.item);
+    const availabilities = await db.getItemAvailabilities(req.params.item);
+
+    res.render('item', { item, availabilities });
+  },
 };

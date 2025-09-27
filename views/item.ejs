@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= item.name %></title>
+  </head>
+  <body>
+    <h1><%= item.name %></h1>
+    <span>Price: <%= item.price %></span>
+    <span>Availability in Stores:</span>
+    <ul>
+      <% availabilities.forEach(store => { %>
+          <li><%= store.name %>: <%= store.amount || 'Sold Out' %></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
