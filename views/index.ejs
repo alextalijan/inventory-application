@@ -8,25 +8,29 @@
   <body>
     <h1>GROCERY SHOP</h1>
     <h2><%= title %></h2>
-    <div>
-      <% items.forEach(item => { %>
-          <div>
-            <span><%= item.name %></span>
-            <% if (item.category) { %>
-              <span><%= item.category %></span>
-            <% } %>
-            <img src="<%= item.imageurl %>" alt="">
-            <span><%= item.price %></span>
-            <% if (item.amount) { %>
-                <% if (item.amount > 0) { %>
-                    <span>Amount: <%= item.amount %></span>
-                <% } else { %>
-                    <span>Sold Out</span>
+    <% if (items.length === 0) { %>
+      <p>There are not any items listed under this category.</p>
+    <% } else { %>
+        <div>
+          <% items.forEach(item => { %>
+              <div>
+                <span><%= item.name %></span>
+                <% if (item.category) { %>
+                  <span><%= item.category %></span>
                 <% } %>
-            <% } %>
-          </div>
-      <% }) %>
-    </div>
+                <img src="<%= item.imageurl %>" alt="">
+                <span><%= item.price %></span>
+                <% if (item.amount) { %>
+                    <% if (item.amount > 0) { %>
+                        <span>Amount: <%= item.amount %></span>
+                    <% } else { %>
+                        <span>Sold Out</span>
+                    <% } %>
+                <% } %>
+              </div>
+          <% }) %>
+        </div>
+    <% } %>
     <aside>
       <h2>Filter Items</h2>
       <h3>Categories</h2>
