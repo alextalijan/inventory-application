@@ -44,7 +44,7 @@ module.exports = {
     return rows;
   },
   getAllStores: async () => {
-    const { rows } = await pool.query('SELECT name FROM stores');
+    const { rows } = await pool.query('SELECT DISTINCT name FROM stores');
     return rows;
   },
   insertItem: async (name, category, price) => {

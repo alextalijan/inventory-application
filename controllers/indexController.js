@@ -120,6 +120,7 @@ module.exports = {
       stores.forEach(async (store) => {
         const randomAmount = Math.floor(Math.random() * 51);
         await db.insertAvailability(store.name, refinedName, randomAmount);
+        console.log('Inserted into store', store.name);
       });
 
       res.redirect(`/categories/${refinedCategory}`);
