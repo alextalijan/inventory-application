@@ -175,4 +175,21 @@ module.exports = {
 
     res.render('item', { item, availabilities });
   },
+  modifyItem: async (req, res, next) => {
+    const [item] = await db.getItemByName(req.body.rename.toLowerCase());
+
+    // If the new name already exists for other item, stop the user from renaming it
+    if (item) {
+      return next(
+        new CustomError(
+          "The new name you are tyring to set is already in use. Click the link below to go back to item's page.",
+          500,
+          `/items/${req.params.item}`,
+        ),
+      );
+    }
+
+    await db.changeItemName(req.body.rename.toLowerCase(), req.params.item);
+    res.redirect(`/items/${req.body.rename}`);
+  },
 };

@@ -79,4 +79,10 @@ module.exports = {
     );
     return rows;
   },
+  changeItemName: async (newName, item) => {
+    await pool.query(
+      'UPDATE items SET name = $1 WHERE id = (SELECT id FROM items WHERE name = $2)',
+      [newName, item],
+    );
+  },
 };
