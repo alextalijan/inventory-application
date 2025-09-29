@@ -85,4 +85,10 @@ module.exports = {
       [newName, item],
     );
   },
+  modifyCategory: async (newName, category) => {
+    await pool.query(
+      'UPDATE categories SET name = $1 WHERE id = (SELECT id FROM categories WHERE name = $2)',
+      [newName, category],
+    );
+  },
 };

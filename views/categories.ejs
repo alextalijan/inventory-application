@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categories</title>
+  </head>
+  <body>
+    <h1>All Categories</h1>
+    <ul>
+      <% categories.forEach(category => { %>
+          <li><a href="/categories/<%= category.name %>"><%= category.name %></a></li>
+      <% }) %>
+    </ul>
+    <h2>Rename Category</h2>
+    <%- include('partials/errors', { errors }) %>
+    <form action="/categories" method="POST">
+      <label for="name">Select Category:</label>
+      <select name="name" id="name">
+        <% categories.forEach(category => { %>
+            <option value="<%= category.name %>"><%= category.name.toUpperCase() %></option>
+        <% }) %>
+      </select>
+      <label for="rename">New Name:</label>
+      <input type="text" id="rename" name="rename">
+      <button type="submit">Change</button>
+    </form>
+  </body>
+</html>

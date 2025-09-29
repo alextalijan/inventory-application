@@ -32,6 +32,21 @@ const newCategoryValidations = [
     .withMessage('Name of the category must not be longer than 20 characters.'),
 ];
 
+const renameCategoryValidations = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('The category must have a name.')
+    .isLength({ max: 20 })
+    .withMessage('Name of the category must not be longer than 20 characters.'),
+  body('rename')
+    .trim()
+    .notEmpty()
+    .withMessage('The category must have a name.')
+    .isLength({ max: 20 })
+    .withMessage('Name of the category must not be longer than 20 characters.'),
+];
+
 const renameItemValidations = [
   body('rename')
     .trim()
@@ -211,7 +226,7 @@ module.exports = {
       if (item) {
         return next(
           new CustomError(
-            "The new name you are tyring to set is already in use. Click the link below to go back to item's page.",
+            "The new name you are trying to set is already in use. Click the link below to go back to item's page.",
             500,
             `/items/${req.params.item}`,
           ),
@@ -223,6 +238,42 @@ module.exports = {
         req.params.item,
       );
       res.redirect(`/items/${req.body.rename.trim().toLowerCase()}`);
+    },
+  ],
+  categoriesGet: async (req, res) => {
+    const categories = await db.getAllCategories();
+
+    res.render('categories', { categories, errors: null });
+  },
+  modifyCategories: [
+    renameCategoryValidations,
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const categories = await db.getAllCategories();
+        return res.render('categories', { categories, errors: errors.array() });
+      }
+
+      const [category] = await db.getCategoryByName(
+        req.body.rename.trim().toLowerCase(),
+      );
+      if (category) {
+        console.log('Category', category, 'exists.');
+        return next(
+          new CustomError(
+            "The name of the category you've chosen already exists. Click on the link below to go back to all categories.",
+            500,
+            '/categories',
+          ),
+        );
+      }
+
+      await db.modifyCategory(
+        req.body.rename.trim().toLowerCase(),
+        req.body.name.toLowerCase(),
+      );
+
+      res.redirect('/categories');
     },
   ],
 };
