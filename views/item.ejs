@@ -15,6 +15,7 @@
       <% }) %>
     </ul>
     <h2>Change Item Name</h2>
+    <%- include('partials/errors', { errors }) %>
     <form action="/items/<%= item.name %>" method="POST">
       <label for="rename">New name:</label>
       <input type="text" name="rename" id="rename">

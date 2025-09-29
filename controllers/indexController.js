@@ -32,6 +32,15 @@ const newCategoryValidations = [
     .withMessage('Name of the category must not be longer than 20 characters.'),
 ];
 
+const renameItemValidations = [
+  body('rename')
+    .trim()
+    .notEmpty()
+    .withMessage('The item must have a name.')
+    .isLength({ max: 25 })
+    .withMessage('Name of the item must not be longer than 25 characters.'),
+];
+
 module.exports = {
   itemsGet: async (req, res) => {
     try {
@@ -169,27 +178,51 @@ module.exports = {
       res.redirect('/');
     },
   ],
-  itemGet: async (req, res) => {
+  itemGet: async (req, res, next) => {
     const [item] = await db.getItemByName(req.params.item);
     const availabilities = await db.getItemAvailabilities(req.params.item);
 
-    res.render('item', { item, availabilities });
-  },
-  modifyItem: async (req, res, next) => {
-    const [item] = await db.getItemByName(req.body.rename.toLowerCase());
-
-    // If the new name already exists for other item, stop the user from renaming it
-    if (item) {
-      return next(
-        new CustomError(
-          "The new name you are tyring to set is already in use. Click the link below to go back to item's page.",
-          500,
-          `/items/${req.params.item}`,
-        ),
-      );
+    if (!item) {
+      return next(new CustomError('Item not found', 404));
     }
 
-    await db.changeItemName(req.body.rename.toLowerCase(), req.params.item);
-    res.redirect(`/items/${req.body.rename}`);
+    res.render('item', { item, availabilities, errors: null });
   },
+  modifyItem: [
+    renameItemValidations,
+    async (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const [item] = await db.getItemByName(req.params.item);
+        const availabilities = await db.getItemAvailabilities(req.params.item);
+
+        return res.render('item', {
+          item,
+          availabilities,
+          errors: errors.array(),
+        });
+      }
+
+      const [item] = await db.getItemByName(
+        req.body.rename.trim().toLowerCase(),
+      );
+
+      // If the new name already exists for other item, stop the user from renaming it
+      if (item) {
+        return next(
+          new CustomError(
+            "The new name you are tyring to set is already in use. Click the link below to go back to item's page.",
+            500,
+            `/items/${req.params.item}`,
+          ),
+        );
+      }
+
+      await db.changeItemName(
+        req.body.rename.trim().toLowerCase(),
+        req.params.item,
+      );
+      res.redirect(`/items/${req.body.rename.trim().toLowerCase()}`);
+    },
+  ],
 };
