@@ -14,7 +14,7 @@
         <div>
           <% items.forEach(item => { %>
               <div>
-                <span><%= item.name %></span>
+                <a href="/items/<%= item.name %>"><%= item.name %></a>
                 <% if (item.category) { %>
                   <span><%= item.category %></span>
                 <% } %>
