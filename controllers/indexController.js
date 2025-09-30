@@ -285,4 +285,14 @@ module.exports = {
 
     res.redirect('/');
   },
+  deleteCategoryGet: async (req, res) => {
+    res.render('deleteCategory', { category: req.params.category });
+  },
+  deleteCategoryPost: async (req, res) => {
+    const category = req.params.category;
+    await db.emptyCategoryItems(category);
+    await db.deleteCategory(category);
+
+    res.redirect('/categories');
+  },
 };

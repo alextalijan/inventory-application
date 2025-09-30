@@ -94,4 +94,13 @@ module.exports = {
   deleteItem: async (item) => {
     await pool.query('DELETE FROM items WHERE name = $1', [item]);
   },
+  deleteCategory: async (category) => {
+    await pool.query('DELETE FROM categories WHERE name = $1', [category]);
+  },
+  emptyCategoryItems: async (category) => {
+    await pool.query(
+      'UPDATE items SET category_id = NULL WHERE category_id = (SELECT id FROM categories WHERE name = $1)',
+      [category],
+    );
+  },
 };

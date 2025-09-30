@@ -15,6 +15,8 @@ router.post('/categories', controller.modifyCategories);
 router.get('/categories/new', controller.newCategoryGet);
 router.post('/categories/new', controller.newCategoryPost);
 router.get('/categories/:category', controller.categoryItemsGet);
+router.get('/categories/:category/delete', controller.deleteCategoryGet);
+router.post('/categories/:category/delete', controller.deleteCategoryPost);
 router.get('/stores/:store', controller.storeItemsGet);
 
 module.exports = router;

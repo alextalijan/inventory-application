@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Category</title>
+  </head>
+  <body>
+    <h1>Delete Category</h1>
+    <form action="/categories/<%= category %>/delete" method="POST">
+      <p>Are you sure you want to delete <%= category %>?</p>
+      <a href="/categories/<%= category %>">No</a>
+      <button type="submit">Yes</button>
+    </form>
+  </body>
+</html>
