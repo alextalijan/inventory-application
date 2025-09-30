@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 require('dotenv').config();
+const Hash = require('../js/Hash');
 
 const createTables = `
 CREATE TABLE IF NOT EXISTS categories (
@@ -25,6 +26,12 @@ CREATE TABLE IF NOT EXISTS item_availability (
     item_id INTEGER REFERENCES items (id) ON DELETE CASCADE,
     store_id INTEGER REFERENCES stores (id),
     amount INTEGER NOT NULL CHECK (amount >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    hash VARCHAR(100) NOT NULL
 );
 `;
 
@@ -304,24 +311,41 @@ async function main() {
     connectionString: process.env.DB_URI,
     multipleStatements: true,
   });
+
+  const populateUsers = `
+    INSERT INTO users(username, hash)
+    VALUES ('admin', $1);
+  `;
+
   console.log('Connecting to the database...');
   await client.connect();
+
   console.log('Connected. Creating tables...');
   await client.query(createTables);
-  console.log('Tables have been created. Inserting categories...');
+
+  console.log('Tables have been created. Adding users to the database.');
+  const adminHash = await Hash.hash('adminishere');
+  await client.query(populateUsers, [adminHash]);
+
+  console.log('Users have been added. Inserting categories...');
   await client.query(populateCategories);
+
   console.log('Categories have been created. Inserting data into items...');
   await client.query(populateItems);
+
   console.log(
     'Items have been inserted. Inserting stores into the database...',
   );
   await client.query(populateStores);
+
   console.log(
     'Stores have been populated. Generating availability for each store...',
   );
   await client.query(populateAvailability);
+
   console.log('All data has been inserted.');
   await client.end();
+
   console.log('Disconnected from the database.');
 }
 

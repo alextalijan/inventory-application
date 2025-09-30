@@ -97,4 +97,11 @@ module.exports = {
   deleteCategory: async (category) => {
     await pool.query('DELETE FROM categories WHERE name = $1', [category]);
   },
+  getUserByUsername: async (username) => {
+    const { rows } = await pool.query(
+      'SELECT * FROM users WHERE username = $1',
+      [username],
+    );
+    return rows;
+  },
 };

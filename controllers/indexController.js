@@ -1,6 +1,7 @@
 const db = require('../db/queries');
 const { body, validationResult } = require('express-validator');
 const CustomError = require('../errors/CustomError');
+const Hash = require('../js/Hash');
 
 const newItemValidations = [
   body('name')
@@ -218,6 +219,19 @@ module.exports = {
         });
       }
 
+      // If the admin password doensn't match, stop further actions
+      const [admin] = await db.getUserByUsername('admin');
+      const passwordMatches = await Hash.compare(req.body.password, admin.hash);
+      if (!passwordMatches) {
+        return next(
+          new CustomError(
+            "The password doesn't match. You don't have access to change the item name. Click the link below to visit the item page.",
+            500,
+            `/items/${req.params.item}`,
+          ),
+        );
+      }
+
       const [item] = await db.getItemByName(
         req.body.rename.trim().toLowerCase(),
       );
@@ -254,6 +268,19 @@ module.exports = {
         return res.render('categories', { categories, errors: errors.array() });
       }
 
+      // If the admin password doensn't match, stop further actions
+      const [admin] = await db.getUserByUsername('admin');
+      const passwordMatches = await Hash.compare(req.body.password, admin.hash);
+      if (!passwordMatches) {
+        return next(
+          new CustomError(
+            "The password doesn't match. You don't have access to change the category name. Click the link below to view all categories.",
+            500,
+            `/categories`,
+          ),
+        );
+      }
+
       const [category] = await db.getCategoryByName(
         req.body.rename.trim().toLowerCase(),
       );
@@ -279,7 +306,20 @@ module.exports = {
   deleteItemGet: async (req, res) => {
     res.render('deleteItem', { item: req.params.item });
   },
-  deleteItemPost: async (req, res) => {
+  deleteItemPost: async (req, res, next) => {
+    // If the admin password doensn't match, stop further actions
+    const [admin] = await db.getUserByUsername('admin');
+    const passwordMatches = await Hash.compare(req.body.password, admin.hash);
+    if (!passwordMatches) {
+      return next(
+        new CustomError(
+          "The password doesn't match. You don't have access to delete an item. Click the link below to view this item.",
+          500,
+          `/items/${req.params.item}`,
+        ),
+      );
+    }
+
     const item = req.params.item;
     await db.deleteItem(item);
 
@@ -288,7 +328,20 @@ module.exports = {
   deleteCategoryGet: async (req, res) => {
     res.render('deleteCategory', { category: req.params.category });
   },
-  deleteCategoryPost: async (req, res) => {
+  deleteCategoryPost: async (req, res, next) => {
+    // If the admin password doensn't match, stop further actions
+    const [admin] = await db.getUserByUsername('admin');
+    const passwordMatches = await Hash.compare(req.body.password, admin.hash);
+    if (!passwordMatches) {
+      return next(
+        new CustomError(
+          "The password doesn't match. You don't have access to delete a category. Click the link below to view this category.",
+          500,
+          `/categories/${req.params.category}`,
+        ),
+      );
+    }
+
     const category = req.params.category;
     await db.deleteCategory(category);
 

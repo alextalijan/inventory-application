@@ -8,6 +8,8 @@
   <body>
     <h1>Delete Item</h1>
     <form action="/items/<%= item %>/delete" method="POST">
+      <label for="password">Admin Password:</label>
+      <input type="password" name="password" id="password" />
       <p>Are you sure you want to delete <%= item %></p>
       <a href="/items/<%= item %>">No</a>
       <button type="submit">Yes</button>
