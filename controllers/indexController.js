@@ -276,4 +276,13 @@ module.exports = {
       res.redirect('/categories');
     },
   ],
+  deleteItemGet: async (req, res) => {
+    res.render('deleteItem', { item: req.params.item });
+  },
+  deleteItemPost: async (req, res) => {
+    const item = req.params.item;
+    await db.deleteItem(item);
+
+    res.redirect('/');
+  },
 };

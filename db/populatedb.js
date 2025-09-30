@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS stores (
 
 CREATE TABLE IF NOT EXISTS item_availability (
     id SERIAL PRIMARY KEY,
-    item_id INTEGER REFERENCES items (id),
+    item_id INTEGER REFERENCES items (id) ON DELETE CASCADE,
     store_id INTEGER REFERENCES stores (id),
     amount INTEGER NOT NULL CHECK (amount >= 0)
 );

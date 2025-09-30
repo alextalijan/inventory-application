@@ -8,6 +8,8 @@ router.get('/items/new', controller.newItemGet);
 router.post('/items/new', controller.newItemPost);
 router.get('/items/:item', controller.itemGet);
 router.post('/items/:item', controller.modifyItem);
+router.get('/items/:item/delete', controller.deleteItemGet);
+router.post('/items/:item/delete', controller.deleteItemPost);
 router.get('/categories', controller.categoriesGet);
 router.post('/categories', controller.modifyCategories);
 router.get('/categories/new', controller.newCategoryGet);

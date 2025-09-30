@@ -91,4 +91,7 @@ module.exports = {
       [newName, category],
     );
   },
+  deleteItem: async (item) => {
+    await pool.query('DELETE FROM items WHERE name = $1', [item]);
+  },
 };
