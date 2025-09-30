@@ -74,6 +74,7 @@ module.exports = {
       const items = await db.getItemsByCategory(req.params.category);
       const categories = await db.getAllCategories();
       const stores = await db.getAllStores();
+      res.locals.category = req.params.category;
 
       res.render('index', {
         title: req.params.category,

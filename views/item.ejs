@@ -6,6 +6,7 @@
     <title><%= item.name %></title>
   </head>
   <body>
+    <%- include('partials/header') %>
     <h1><%= item.name %></h1>
     <span>Price: <%= item.price %></span>
     <span>Availability in Stores:</span>
@@ -23,5 +24,6 @@
       <input type="password" name="password" id="password">
       <button type="submit">Change</button>
     </form>
+    <a href="/items/<%= item.name %>/delete">Delete Item</a>
   </body>
 </html>

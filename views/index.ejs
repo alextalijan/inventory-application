@@ -6,8 +6,12 @@
     <title>Shop</title>
   </head>
   <body>
+    <%- include('partials/header') %>
     <h1>GROCERY SHOP</h1>
     <h2><%= title %></h2>
+    <% if (locals.category) { %>
+        <a href="/categories/<%= category %>/delete">Delete Category</a>
+    <% } %>
     <% if (items.length === 0) { %>
       <p>There are not any items listed under this category.</p>
     <% } else { %>
