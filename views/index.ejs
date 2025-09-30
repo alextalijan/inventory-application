@@ -20,12 +20,10 @@
                 <% } %>
                 <img src="<%= item.imageurl %>" alt="">
                 <span><%= item.price %></span>
-                <% if (item.amount) { %>
-                    <% if (item.amount > 0) { %>
-                        <span>Amount: <%= item.amount %></span>
-                    <% } else { %>
-                        <span>Sold Out</span>
-                    <% } %>
+                <% if (item.amount > 0) { %>
+                    <span>Amount: <%= item.amount %></span>
+                <% } else if (item.amount === 0) { %>
+                    <span>Sold Out</span>
                 <% } %>
               </div>
           <% }) %>
