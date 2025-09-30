@@ -8,7 +8,7 @@
   <body>
     <h1>Add New Item</h1>
     <%- include('partials/errors', { errors }) %>
-    <form action="/newitem" method="POST">
+    <form action="/items/new" method="POST">
       <label for="name">Item Name:</label>
       <input type="text" name="name" id="name" value="<%= locals.name %>" />
       <label for="category">Category:</label>

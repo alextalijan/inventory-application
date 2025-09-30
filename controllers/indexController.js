@@ -182,7 +182,7 @@ module.exports = {
           new CustomError(
             'This category already exists. Click the link below to add a new category.',
             500,
-            '/newcategory',
+            '/categories/new',
           ),
         );
       }
@@ -190,7 +190,7 @@ module.exports = {
       // Insert the new category into database
       await db.insertCategory(req.body.name.trim().toLowerCase());
 
-      res.redirect('/');
+      res.redirect('/categories');
     },
   ],
   itemGet: async (req, res, next) => {
