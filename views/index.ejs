@@ -3,50 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
     <title>Shop</title>
   </head>
   <body>
     <%- include('partials/header') %>
-    <h1>GROCERY SHOP</h1>
-    <h2><%= title %></h2>
+    <h1 class="h1">GROCERY SHOP</h1>
+    <h2 class="title"><%= title %></h2>
     <% if (locals.category) { %>
-        <a href="/categories/<%= category %>/delete">Delete Category</a>
+        <a href="/categories/<%= category %>/delete" class="delete-category-link">Delete Category</a>
     <% } %>
     <% if (items.length === 0) { %>
       <p>There are not any items listed under this category.</p>
     <% } else { %>
-        <div>
+        <div class="item-cards">
           <% items.forEach(item => { %>
-              <div>
-                <a href="/items/<%= item.name %>"><%= item.name %></a>
-                <% if (item.category) { %>
-                  <span><%= item.category %></span>
-                <% } %>
+              <a href="/items/<%= item.name %>" class="item">
+                <span class="item-name"><%= item.name %></span>
+                <span class="item-category"><%= item.category || '/' %></span>
                 <img src="<%= item.imageurl %>" alt="">
-                <span><%= item.price %></span>
+                <span class="item-price"><%= item.price %></span>
                 <% if (item.amount > 0) { %>
-                    <span>Amount: <%= item.amount %></span>
+                    <span class="item-amount">Amount: <%= item.amount %></span>
                 <% } else if (item.amount === 0) { %>
-                    <span>Sold Out</span>
+                    <span class="item-sold-out">Sold Out</span>
                 <% } %>
-              </div>
+              </a>
           <% }) %>
         </div>
     <% } %>
-    <aside>
-      <h2>Filter Items</h2>
-      <h3>Categories</h2>
-      <ul>
-        <% categories.forEach(category => { %>
-            <li><a href="/categories/<%= category.name %>"><%= category.name %></a></li>
-        <% }) %>
-      </ul>
-      <h3>Store Availability</h3>
-      <ul>
-        <% stores.forEach(store => { %>
-            <li><a href="/stores/<%= store.name %>"><%= store.name %></a></li>
-        <% }) %>
-      </ul>
-    </aside>
+    <%- include('partials/sidebar', { categories, stores }) %>
   </body>
 </html>

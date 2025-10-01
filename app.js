@@ -14,6 +14,9 @@ app.set('view engine', 'ejs');
 // Configure app to have access to form inputs
 app.use(express.urlencoded({ extended: true }));
 
+// Indicate where to serve static files from
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use('/', indexRouter);
 app.use((req, res, next) => {
   res.render('404');

@@ -1,0 +1,17 @@
+.links {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  font-size: 2rem;
+  margin-left: 2rem;
+}
+
+.links a {
+  text-decoration: none;
+  color: black;
+}
+
+.links a:hover {
+  color: blue;
+}

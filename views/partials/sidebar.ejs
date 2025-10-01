@@ -1,0 +1,19 @@
+<aside class="sidebar">
+      <h2>Filter Items</h2>
+      <div class="categories">
+        <h3 class="filter-type">Categories</h2>
+        <ul>
+          <% categories.forEach(category => { %>
+              <li><a href="/categories/<%= category.name %>"><%= category.name %></a></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="stores">
+        <h3 class="filter-type">Store Availability</h3>
+        <ul>
+          <% stores.forEach(store => { %>
+              <li><a href="/stores/<%= store.name %>"><%= store.name %></a></li>
+          <% }) %>
+        </ul>
+      </div>
+    </aside>

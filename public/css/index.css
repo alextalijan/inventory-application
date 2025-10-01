@@ -1,0 +1,55 @@
+.h1 {
+  font-size: 4rem;
+  text-align: center;
+  margin: 3rem auto;
+}
+
+.title {
+  font-size: 3rem;
+  text-align: center;
+  margin: 3rem auto;
+}
+
+.item-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 300px;
+  gap: 1.5rem;
+  margin-right: 300px;
+  margin-left: 100px;
+  margin-bottom: 3rem;
+}
+
+.item {
+  padding: 1rem;
+  border: 1px solid gray;
+  border-radius: 1rem;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: 100%;
+  grid-template-rows: min-content min-content 1fr min-content;
+  text-decoration: none;
+  color: black;
+}
+
+.item-name {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.item-category {
+  text-align: right;
+  opacity: 0.6;
+}
+
+.item-price {
+  text-align: right;
+}
+
+.sidebar {
+  position: fixed;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1rem;
+}
